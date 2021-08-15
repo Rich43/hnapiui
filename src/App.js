@@ -1,21 +1,9 @@
-import Bubble from "./components/Bubble";
 import FetchTopStoriesProvider from "./providers/FetchTopStoriesProvider";
-import {Grid, makeStyles,} from "@material-ui/core";
+import {Grid,} from "@material-ui/core";
 import React, {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {display} from "./actions";
-
-const useStyles = makeStyles((theme) => ({
-    padding: {
-        padding: theme.spacing(2),
-    },
-}));
-
-function BubbleGrid(classes, row) {
-    return (
-        <Grid key={`grid-${row.index}`} item xs={12} className={classes.padding}><Bubble key={`bubble-${row.index}`} id={row.id}/></Grid>
-    );
-}
+import {BubbleGrid} from "./components/BubbleGrid";
 
 const BATCH_SIZE = 20;
 
@@ -25,12 +13,11 @@ function App() {
     const displayedData = useSelector(state => state.defaultReducer.displayedData);
     const data = useSelector(state => state.defaultReducer.data);
     const dispatch = useDispatch();
-    const classes = useStyles();
     const ref = useRef();
     const displayedDataBuffer = [];
 
     for (let i = 0; i < displayedData.length; i++) {
-        displayedDataBuffer.push(BubbleGrid(classes, displayedData[i]));
+        displayedDataBuffer.push(<BubbleGrid row={displayedData[i]} />);
     }
 
     useEffect(() => {
